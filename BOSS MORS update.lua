@@ -11,7 +11,6 @@ BOSS-MORS Script for Rost Alpha (Xeno Injector Version)
 5. В игре нажмите INSERT для открытия меню
 ]]
 
--- ОПТИМИЗАЦИЯ: Кэширование сервисов и глобальных переменных
 local getservice = game.GetService
 local Players = getservice(game, "Players")
 local UserInputService = getservice(game, "UserInputService")
@@ -27,14 +26,12 @@ local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 local Mouse = LocalPlayer:GetMouse()
 
--- ОПТИМИЗАЦИЯ: Флаги и переменные
 if _G.BOSSMORS_LOADED then
     print("Скрипт уже запущен!")
     return
 end
 _G.BOSSMORS_LOADED = true
 
--- ОПТИМИЗАЦИЯ: Таблицы для кэширования
 local Vector2_new = Vector2.new
 local Vector3_new = Vector3.new
 local Color3_new = Color3.fromRGB
@@ -47,7 +44,6 @@ local table_find = table.find
 local pcall = pcall
 local task_wait = task.wait
 
--- Глобальные переменные
 _G.BOSSMORS = {
     Version = "3.5",
     Author = "BOSS-MORS",
@@ -55,13 +51,12 @@ _G.BOSSMORS = {
     LoadTime = os.time()
 }
 
--- ОПТИМИЗАЦИЯ: Настройки с кэшированием и красивыми цветами
 local Settings = {
     Menu = {
         Key = Enum.KeyCode.Insert,
         Open = false,
-        BackgroundColor = Color3.fromRGB(15, 15, 20), -- Черный фон
-        AccentColor = Color3.fromRGB(170, 0, 255), -- Фиолетовый акцент
+        BackgroundColor = Color3.fromRGB(15, 15, 20),
+        AccentColor = Color3.fromRGB(170, 0, 255),
         TextColor = Color3.fromRGB(255, 255, 255),
         HighlightColor = Color3.fromRGB(255, 50, 150),
         AnimationSpeed = 0.3,
@@ -189,7 +184,6 @@ local Settings = {
     }
 }
 
--- ОПТИМИЗАЦИЯ: Кэшированные объекты и переменные
 local Connections = {}
 local ESPObjects = {}
 local BlockedESPObjects = {}
@@ -201,13 +195,11 @@ local UpdateInterval = 1/60
 local FrameSkip = 0
 local PerformanceMode = true
 
--- ОПТИМИЗАЦИЯ: Функция для применения стилей к UI
 local function ApplyUIStyles(frame)
     frame.BackgroundColor3 = Settings.Menu.BackgroundColor
     frame.BackgroundTransparency = 1 - Settings.Menu.Transparency
     frame.BorderSizePixel = 0
     
-    -- Добавляем тень для красоты
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "Shadow"
     shadow.Size = UDim2.new(1, 20, 1, 20)
@@ -222,7 +214,6 @@ local function ApplyUIStyles(frame)
     shadow.Parent = frame
 end
 
--- ОПТИМИЗАЦИЯ: Функция для создания градиента
 local function CreateGradient(frame, color1, color2, direction)
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0, color1), ColorSequenceKeypoint.new(1, color2)})
@@ -231,7 +222,6 @@ local function CreateGradient(frame, color1, color2, direction)
     return gradient
 end
 
--- Звук с оптимизацией
 local function PlayAhSound()
     if not Settings.Sound.Enabled then return end
     pcall(function()
@@ -244,7 +234,6 @@ local function PlayAhSound()
     end)
 end
 
--- ОПТИМИЗАЦИЯ: Функция подтверждения с красивым UI
 local function ShowWarning(functionName, warningText, callback)
     local warningGui = Instance.new("ScreenGui")
     warningGui.Name = "WarningGUI"
@@ -260,11 +249,9 @@ local function ShowWarning(functionName, warningText, callback)
     mainFrame.ClipsDescendants = true
     mainFrame.Parent = warningGui
     
-    -- Анимация появления
     mainFrame.BackgroundTransparency = 1
     TweenService:Create(mainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundTransparency = 0.05}):Play()
     
-    -- Градиентный фон
     CreateGradient(mainFrame, Settings.Menu.AccentColor, Settings.Menu.HighlightColor, 45)
     
     local title = Instance.new("TextLabel")
@@ -324,9 +311,6 @@ local function ShowWarning(functionName, warningText, callback)
     end)
 end
 
--- ОПТИМИЗАЦИЯ: Все функции оптимизированы и кэшированы
-
--- Spinner функции
 local function AimBotXSpinner()
     if not Settings.Spinner.Enabled or not Settings.Spinner.AimBotXSpinner then return end
     local currentTime = tick()
@@ -361,7 +345,6 @@ local function NoFaire()
     end
 end
 
--- HitBox Expander оптимизированный
 local function HitBoxExpander()
     if not Settings.Player.HitBox.Enabled then return end
     local hitboxSize = Settings.Player.HitBox.Size
@@ -378,7 +361,6 @@ local function HitBoxExpander()
     end
 end
 
--- BlockESP оптимизированный
 local function BlockESP()
     if not Settings.Visuals.BlockESP.Enabled then return end
     
@@ -399,7 +381,6 @@ local function BlockESP()
     end
 end
 
--- Invisible Turret
 local function InvisibleTurret()
     if not Settings.Turret.Invisible then return end
     if not LocalPlayer.Character then return end
@@ -417,7 +398,6 @@ local function InvisibleTurret()
     end
 end
 
--- Everyone Fly оптимизированный
 local function EveryoneFly()
     if not Settings.EveryoneFly.Enabled then return end
     local flySpeed = Settings.EveryoneFly.Speed
@@ -443,7 +423,6 @@ local function EveryoneFly()
     end
 end
 
--- Crash Server оптимизированный
 local function CrashServer()
     if not Settings.Fun.CrashServer.Enabled then return end
     
@@ -462,7 +441,6 @@ local function CrashServer()
     end
 end
 
--- Kill Server
 local function KillServer()
     if not Settings.Fun.KillServer.Enabled then return end
     
@@ -478,7 +456,6 @@ local function KillServer()
     end
 end
 
--- Friend Add автоматический
 local function FriendAdd()
     if not Settings.Fun.FriendAdd.Enabled then return end
     
@@ -491,7 +468,6 @@ local function FriendAdd()
     end
 end
 
--- What's Soft? (Kick All)
 local function WhatsSoft()
     if not Settings.Fun.WhatsSoft.Enabled then return end
     
@@ -503,7 +479,6 @@ local function WhatsSoft()
     end
 end
 
--- Report SPAM
 local function ReportSpam()
     if not Settings.Fun.ReportSpam.Enabled then return end
     
@@ -519,25 +494,22 @@ local function ReportSpam()
     end
 end
 
--- Anti-Ban улучшенный и оптимизированный
 local function AntiBanBypass()
     if not Settings.Safety.AntiBan then return end
     
     pcall(function()
-        -- Обход базовых детектов
+
         local oldName = LocalPlayer.Name
         LocalPlayer.Name = HttpService:GenerateGUID(false)
         task_wait(0.05)
         LocalPlayer.Name = oldName
         
-        -- Скрываем подозрительные объекты
         for _, obj in pairs(CoreGui:GetChildren()) do
             if obj.Name:find("BOSS") or obj.Name:find("MORS") then
                 obj.DisplayOrder = 999
             end
         end
         
-        -- Обход Velocity детекта
         if LocalPlayer.Character then
             local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
             if humanoid then
@@ -552,9 +524,8 @@ local function AntiBanBypass()
     end)
 end
 
--- ESP оптимизированный с новыми фичами
 local function UpdateESP()
-    -- Очистка
+
     for _, obj in pairs(ESPObjects) do
         pcall(function() if obj.Remove then obj:Remove() elseif obj.Destroy then obj:Destroy() end end)
     end
@@ -585,7 +556,6 @@ local function UpdateESP()
         local isFriend = FriendsSet[player.Name]
         local color = isFriend and friendColor or enemyColor
         
-        -- Box ESP с обводкой
         if Settings.Visuals.ESP.Box then
             local box = Drawing.new("Square")
             box.Visible = true
@@ -613,7 +583,6 @@ local function UpdateESP()
             table_insert(ESPObjects, {update = updateBox})
         end
         
-        -- Name ESP
         if Settings.Visuals.ESP.Name then
             local nameText = Drawing.new("Text")
             nameText.Visible = true
@@ -640,7 +609,6 @@ local function UpdateESP()
             table_insert(ESPObjects, {update = updateName})
         end
         
-        -- Distance ESP
         if Settings.Visuals.ESP.Distance then
             local distanceText = Drawing.new("Text")
             distanceText.Visible = true
@@ -668,7 +636,6 @@ local function UpdateESP()
             table_insert(ESPObjects, {update = updateDistance})
         end
         
-        -- Health ESP с цветом
         if Settings.Visuals.ESP.Health then
             local healthText = Drawing.new("Text")
             healthText.Visible = true
@@ -702,7 +669,6 @@ local function UpdateESP()
             table_insert(ESPObjects, {update = updateHealth})
         end
         
-        -- Weapon ESP
         if Settings.Visuals.ESP.Weapon then
             local weaponText = Drawing.new("Text")
             weaponText.Visible = true
@@ -730,7 +696,6 @@ local function UpdateESP()
             table_insert(ESPObjects, {update = updateWeapon})
         end
         
-        -- Armor ESP
         if Settings.Visuals.ESP.Armor then
             local armorText = Drawing.new("Text")
             armorText.Visible = true
@@ -760,7 +725,6 @@ local function UpdateESP()
     end
 end
 
--- Обновление ESP объектов
 local function UpdateESPObjects()
     for i = #ESPObjects, 1, -1 do
         local obj = ESPObjects[i]
@@ -770,7 +734,6 @@ local function UpdateESPObjects()
     end
 end
 
--- Fly Hack оптимизированный
 local FlyEnabled = false
 local FlyBodyVelocity = nil
 local FlyBodyGyro = nil
@@ -823,7 +786,6 @@ local function UpdateFly()
     end
 end
 
--- Crosshair красивая
 local CrosshairObjects = {}
 local function CreateCrosshair()
     for _, obj in pairs(CrosshairObjects) do
@@ -873,7 +835,6 @@ local function CreateCrosshair()
     end
 end
 
--- Ночное зрение
 local function UpdateNightVision()
     if Settings.Visuals.NightVision.Enabled then
         Lighting.Ambient = Settings.Visuals.NightVision.Color
@@ -888,7 +849,6 @@ local function UpdateNightVision()
     end
 end
 
--- Скорость и прыжок
 local function UpdateSpeed()
     if Settings.Player.Speed.Enabled and LocalPlayer.Character then
         local humanoid = LocalPlayer.Character:FindFirstChild("Humanoid")
@@ -917,7 +877,6 @@ local function UpdateJump()
     end
 end
 
--- No Clip
 local function UpdateNoClip()
     if Settings.Player.NoClip.Enabled and LocalPlayer.Character then
         for _, part in pairs(LocalPlayer.Character:GetDescendants()) do
@@ -928,7 +887,6 @@ local function UpdateNoClip()
     end
 end
 
--- Anti-AFK
 local function UpdateAntiAFK()
     if Settings.Exploits.AntiAFK then
         pcall(function()
@@ -938,7 +896,6 @@ local function UpdateAntiAFK()
     end
 end
 
--- Обновление друзей
 local function UpdateFriendsSet()
     FriendsSet = {}
     for _, friend in ipairs(Settings.AimBot.Friends) do
@@ -946,13 +903,11 @@ local function UpdateFriendsSet()
     end
 end
 
--- ОПТИМИЗАЦИЯ: Главный цикл с приоритетами
 local function FastUpdate()
     local currentTime = tick()
     if currentTime - LastUpdateTime < UpdateInterval then return end
     LastUpdateTime = currentTime
     
-    -- Приоритетные функции (каждый кадр)
     pcall(function()
         UpdateFly()
         UpdateSpeed()
@@ -963,7 +918,6 @@ local function FastUpdate()
     end)
 end
 
--- Функции с низким приоритетом (каждые несколько кадров)
 local frameCounter = 0
 local function MediumUpdate()
     frameCounter = frameCounter + 1
@@ -980,7 +934,6 @@ local function MediumUpdate()
     end)
 end
 
--- Функции с очень низким приоритетом (раз в секунду)
 local function SlowUpdate()
     pcall(function()
         UpdateNightVision()
@@ -998,7 +951,6 @@ local function SlowUpdate()
     end)
 end
 
--- ОПТИМИЗАЦИЯ: Красивое меню с анимациями
 Library = {Tabs = {}, UI = nil}
 
 function Library:CreateWindow()
@@ -1008,7 +960,6 @@ function Library:CreateWindow()
     ScreenGui.ResetOnSpawn = false
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     
-    -- Главное окно с черным фоном
     local MainFrame = Instance.new("Frame")
     MainFrame.Size = UDim2.new(0, 520, 0, 600)
     MainFrame.Position = UDim2.new(0.5, -260, 0.5, -300)
@@ -1019,17 +970,14 @@ function Library:CreateWindow()
     MainFrame.Visible = false
     MainFrame.Parent = ScreenGui
     
-    -- Градиент для фона
     CreateGradient(MainFrame, Settings.Menu.BackgroundColor, Settings.Menu.AccentColor, 135)
     
-    -- Эффект размытия (если включен)
     if Settings.Menu.BlurEffect then
         local blur = Instance.new("BlurEffect")
         blur.Size = 5
         blur.Parent = ScreenGui
     end
     
-    -- Заголовок с градиентом
     local TitleBar = Instance.new("Frame")
     TitleBar.Size = UDim2.new(1, 0, 0, 45)
     TitleBar.BackgroundColor3 = Settings.Menu.AccentColor
@@ -1037,7 +985,6 @@ function Library:CreateWindow()
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = MainFrame
     
-    -- Заголовок с тенью
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, -70, 1, 0)
     Title.Position = UDim2.new(0, 15, 0, 0)
@@ -1050,7 +997,6 @@ function Library:CreateWindow()
     Title.TextStrokeTransparency = 0.5
     Title.Parent = TitleBar
     
-    -- Кнопка закрытия с анимацией
     local CloseButton = Instance.new("TextButton")
     CloseButton.Size = UDim2.new(0, 35, 0, 35)
     CloseButton.Position = UDim2.new(1, -40, 0, 5)
@@ -1069,14 +1015,12 @@ function Library:CreateWindow()
         MainFrame.Visible = false
     end)
     
-    -- Контент
     local Content = Instance.new("Frame")
     Content.Size = UDim2.new(1, 0, 1, -45)
     Content.Position = UDim2.new(0, 0, 0, 45)
     Content.BackgroundTransparency = 1
     Content.Parent = MainFrame
     
-    -- Панель вкладок с прокруткой
     local TabContainer = Instance.new("ScrollingFrame")
     TabContainer.Size = UDim2.new(0, 140, 1, 0)
     TabContainer.BackgroundColor3 = Color3_new(20, 20, 25)
@@ -1091,7 +1035,6 @@ function Library:CreateWindow()
     TabListLayout.SortOrder = Enum.SortOrder.LayoutOrder
     TabListLayout.Parent = TabContainer
     
-    -- Правая панель
     local RightPanel = Instance.new("Frame")
     RightPanel.Size = UDim2.new(1, -140, 1, 0)
     RightPanel.Position = UDim2.new(0, 140, 0, 0)
@@ -1115,7 +1058,6 @@ function Library:CreateTab(name, icon)
     TabButton.TextSize = 13
     TabButton.Parent = self.UI.TabContainer
     
-    -- Эффект при наведении
     TabButton.MouseEnter:Connect(function()
         TweenService:Create(TabButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundTransparency = 0}):Play()
     end)
@@ -1335,10 +1277,8 @@ function Library:CreateColorPicker(tab, text, settingTable, settingKey)
     return ColorFrame
 end
 
--- Создание UI
 Library.UI = Library:CreateWindow()
 
--- Создание всех вкладок с иконками
 local CombatTab = Library:CreateTab("COMBAT", "⚔️")
 local VisualTab = Library:CreateTab("VISUALS", "👁️")
 local PlayerTab = Library:CreateTab("PLAYER", "🏃")
@@ -1349,7 +1289,6 @@ local TurretTab = Library:CreateTab("TURRET", "🤖")
 local EveryoneFlyTab = Library:CreateTab("EVERYONE FLY", "🕊️")
 local SettingsTab = Library:CreateTab("SETTINGS", "⚙️")
 
--- Combat Tab
 Library:CreateToggle(CombatTab, "AimBot", Settings.AimBot, "Enabled")
 Library:CreateSlider(CombatTab, "AimBot FOV", Settings.AimBot, "FOV", 1, 120, 30)
 Library:CreateSlider(CombatTab, "AimBot Smoothness", Settings.AimBot, "Smoothness", 0.1, 1, 0.2)
@@ -1359,7 +1298,6 @@ Library:CreateColorPicker(CombatTab, "AimBot Color", Settings.AimBot, "Color")
 Library:CreateSlider(CombatTab, "HitBox Size", Settings.Player.HitBox, "Size", 1, 20, 10)
 Library:CreateSlider(CombatTab, "HitBox Range", Settings.Player.HitBox, "Range", 1, 100, 50)
 
--- Visual Tab
 Library:CreateToggle(VisualTab, "ESP", Settings.Visuals.ESP, "Enabled")
 Library:CreateToggle(VisualTab, "Box ESP", Settings.Visuals.ESP, "Box")
 Library:CreateToggle(VisualTab, "Name ESP", Settings.Visuals.ESP, "Name")
@@ -1382,7 +1320,6 @@ Library:CreateToggle(VisualTab, "Full Bright", Settings.Visuals.FullBright, "Ena
 Library:CreateToggle(VisualTab, "Crosshair", Settings.Visuals.Crosshair, "Enabled")
 Library:CreateColorPicker(VisualTab, "Crosshair Color", Settings.Visuals.Crosshair, "Color")
 
--- Player Tab
 Library:CreateToggle(PlayerTab, "Speed Hack", Settings.Player.Speed, "Enabled")
 Library:CreateSlider(PlayerTab, "Speed Value", Settings.Player.Speed, "Value", 1, 100, 25)
 Library:CreateToggle(PlayerTab, "High Jump", Settings.Player.Jump, "Enabled")
@@ -1394,32 +1331,26 @@ Library:CreateToggle(PlayerTab, "No Clip", Settings.Player.NoClip, "Enabled")
 Library:CreateToggle(PlayerTab, "No Fall Damage", Settings.Exploits, "NoFallDamage")
 Library:CreateToggle(PlayerTab, "Infinite Jump", Settings.Exploits, "InfiniteJump")
 
--- Dupe Tab
 Library:CreateToggle(DupeTab, "💰 Money Duplication", Settings.Dupe.MoneyDuplication, "Enabled", true, "⚠️ MONEY DUPLICATION = МГНОВЕННЫЙ БАН! Вы уверены?")
 Library:CreateToggle(DupeTab, "📦 Item Duplication", Settings.Dupe.ItemDuplication, "Enabled", true, "⚠️ ITEM DUPLICATION = ПЕРМАНЕНТНЫЙ БАН!")
 
--- Spinner Tab
 Library:CreateToggle(SpinnerTab, "🔄 Spinner Mode", Settings.Spinner, "Enabled", true, "⚠️ SPINNER = БАН АККАУНТА! Использовать на свой страх и риск!")
 Library:CreateToggle(SpinnerTab, "🎯 AimBot X Spinner", Settings.Spinner, "AimBotXSpinner")
 Library:CreateToggle(SpinnerTab, "🛡️ NoFaire", Settings.Spinner, "NoFaire")
 Library:CreateSlider(SpinnerTab, "Spin Speed", Settings.Spinner, "SpinSpeed", 10, 200, 50)
 Library:CreateSlider(SpinnerTab, "Spin Range", Settings.Spinner, "SpinRange", 10, 200, 100)
 
--- Fun Tab
 Library:CreateToggle(FunTab, "💥 Crash Server", Settings.Fun.CrashServer, "Enabled", true, "⚠️ CRASH SERVER = БАН IP АДРЕСА! Вы уверены?")
 Library:CreateToggle(FunTab, "🔪 Kill Server", Settings.Fun.KillServer, "Enabled", true, "⚠️ KILL SERVER = ПЕРМАНЕНТНЫЙ БАН!")
 Library:CreateToggle(FunTab, "👥 Auto Friend Add", Settings.Fun.FriendAdd, "Enabled")
 Library:CreateToggle(FunTab, "❓ What's Soft? (Kick All)", Settings.Fun.WhatsSoft, "Enabled")
 Library:CreateToggle(FunTab, "📢 Report SPAM", Settings.Fun.ReportSpam, "Enabled", true, "⚠️ REPORT SPAM = БАН ЗА СПАМ!")
 
--- Turret Tab
 Library:CreateToggle(TurretTab, "👻 Invisible Turret", Settings.Turret, "Invisible")
 
--- Everyone Fly Tab
 Library:CreateToggle(EveryoneFlyTab, "🕊️ Everyone Fly", Settings.EveryoneFly, "Enabled", true, "⚠️ ВСЕ ИГРОКИ ПОЛУЧАТ БАН! Вы уверены?")
 Library:CreateSlider(EveryoneFlyTab, "Fly Speed", Settings.EveryoneFly, "Speed", 10, 500, 100)
 
--- Settings Tab
 Library:CreateToggle(SettingsTab, "🔊 Sound 'AHHHHHHH'", Settings.Sound, "Enabled")
 Library:CreateSlider(SettingsTab, "Sound Volume", Settings.Sound, "Volume", 0, 1, 0.5)
 Library:CreateToggle(SettingsTab, "🛡️ Anti-Ban", Settings.Safety, "AntiBan")
@@ -1429,7 +1360,6 @@ Library:CreateToggle(SettingsTab, "🕵️ Stealth Mode", Settings.Safety, "Stea
 Library:CreateColorPicker(SettingsTab, "Menu Accent Color", Settings.Menu, "AccentColor")
 Library:CreateColorPicker(SettingsTab, "Menu Background Color", Settings.Menu, "BackgroundColor")
 
--- Unload button
 local UnloadFrame = Instance.new("Frame")
 UnloadFrame.Size = UDim2.new(1, 0, 0, 50)
 UnloadFrame.BackgroundTransparency = 1
@@ -1459,7 +1389,6 @@ UnloadButton.MouseButton1Click:Connect(function()
     print("BOSS-MORS успешно выгружен!")
 end)
 
--- Обработка биндов
 table_insert(Connections, UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
     if input.KeyCode == Settings.Menu.Key then
@@ -1492,7 +1421,6 @@ table_insert(Connections, UserInputService.InputBegan:Connect(function(input, pr
     end
 end))
 
--- Запуск циклов
 table_insert(Connections, RunService.RenderStepped:Connect(FastUpdate))
 table_insert(Connections, RunService.Heartbeat:Connect(MediumUpdate))
 table_insert(Connections, RunService.Stepped:Connect(function()
@@ -1500,13 +1428,11 @@ table_insert(Connections, RunService.Stepped:Connect(function()
     if tick() % 30 < 0.1 then UpdateAntiAFK() end
 end))
 
--- Сохранение старых настроек освещения
 OldLighting.Ambient = Lighting.Ambient
 OldLighting.Brightness = Lighting.Brightness
 OldLighting.FogEnd = Lighting.FogEnd
 OldLighting.GlobalShadows = Lighting.GlobalShadows
 
--- Инициализация
 UpdateFriendsSet()
 
 print("╔════════════════════════════════════════╗")
@@ -1526,7 +1452,6 @@ print("║  к ПЕРМАНЕНТНОМУ БАНУ аккаунта!        ║"
 print("║  Используйте на свой страх и риск!     ║")
 print("╚════════════════════════════════════════╝")
 
--- Показываем меню при старте
 Library.UI.MainFrame.Visible = Settings.Menu.Open
 if Settings.Menu.Open then
     Library.UI.MainFrame.BackgroundTransparency = 0.05
